@@ -1,10 +1,12 @@
 import unittest, sqlite3
 from zoo import Zoo
 from animals import Animal
+from subprocess import call
 
 
 class ZooTest(unittest.TestCase):
     def setUp(self):
+        call('py create_animals_database.py', shell=True)
         self.db_conn = sqlite3.connect('animals.db')
         self.zoo = Zoo(self.db_conn, 2, 1000)
         self.zoo.animals = [Animal(self.db_conn, 'lion', 9, 'luv4o', 'male',
@@ -44,6 +46,7 @@ class ZooTest(unittest.TestCase):
 
     def tearDown(self):
         self.db_conn.close()
+        call('rm -f animals.db', shell=True)
 
 if __name__ == '__main__':
     unittest.main()
