@@ -41,6 +41,10 @@ class ZooTest(unittest.TestCase):
         self.assertTrue(result)
         self.assertEqual(expected, self.zoo.see_animals())
 
+    def test_move_to_haibtat_with_non_existing_animal(self):
+        result = self.zoo.move_to_habitat('asd', 'asd')
+        self.assertFalse(result)
+
     def test_simulate(self):
         pass
 
