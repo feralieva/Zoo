@@ -18,6 +18,8 @@ class Animal():
         self.weight = self.age * age_to_weight
         if self.weight > sql_result[1]:
             self.weight = sql_result[1]
+        elif self.weight == 0:
+            self.weight = age_to_weight
 
     def grow(self):
         self.age += 1
@@ -45,3 +47,9 @@ class Animal():
             return True
         else:
             return False
+
+    def get_gestation_period(self):
+        sql = 'SELECT gestation FROM animals WHERE species=?'
+        cursor = self.db_conn.cursor()
+        gestation = cursor.execute(sql, (self.species, )).fetchone()[0]
+        return gestation
