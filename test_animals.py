@@ -25,6 +25,10 @@ class TestAnimal(unittest.TestCase):
         self.animal = Animal(self.db_conn, "raccoon", 35, "Cohnen", "male")
         self.assertEqual(True, self.animal.die())
 
+    def test_get_gestation_period(self):
+        self.animal = Animal(self.db_conn, 'lion', 12, 'Pol', 'female')
+        self.assertEqual(3, self.animal.get_gestation_period())
+
     def tearDown(self):
         self.db_conn.close()
         call('rm -f animals.db', shell=True)
