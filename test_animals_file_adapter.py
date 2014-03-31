@@ -44,7 +44,7 @@ class AnimalFileAdapterTest(unittest.TestCase):
     def tearDown(self):
         self.animals_db.close()
         self.zoo_db.close()
-        call('rm -f animals.db, zoo.db', shell=True)
+        call('rm -f animals.db zoo.db', shell=True)
 
 if __name__ == '__main__':
     unittest.main()
