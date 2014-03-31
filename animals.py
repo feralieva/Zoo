@@ -5,6 +5,7 @@ from random import randint
 class Animal():
     """docstring for Animal"""
     def __init__(self, db_conn, species, age, name, gender):
+        self.__id = -1
         self.species = species
         self.age = age
         self.name = name
@@ -20,6 +21,12 @@ class Animal():
             self.weight = sql_result[1]
         elif self.weight == 0:
             self.weight = age_to_weight
+
+    def get_id(self):
+        return self.__id
+
+    def set_id(self, new_id):
+        self.__id = new_id
 
     def grow(self):
         self.age += 1
