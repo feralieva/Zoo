@@ -26,6 +26,15 @@ class Animal():
     def get_id(self):
         return self.__id
 
+    def get_weight(self):
+        return self.weight
+
+    def set_weight(self, weight):
+        self.weight = weight
+
+    def get_name(self):
+        return self.name
+
     def set_id(self, new_id):
         self.__id = new_id
 
@@ -53,7 +62,7 @@ class Animal():
         chance = self.age / sql_result[0]
         rand_die = randint(1,100)
 
-        if rand_die <= chance:
+        if rand_die <= chance*100:
             return True
         else:
             return False
@@ -63,3 +72,9 @@ class Animal():
         cursor = self.db_conn.cursor()
         gestation = cursor.execute(sql, (self.species, )).fetchone()[0]
         return gestation
+
+    def food_for_day(self):
+        sql = 'SELECT food_weight_ratio FROM animals WHERE species = ?'
+        cursor = self.db_conn.cursor()
+        sql_result = cursor.execute(sql, (self.species,)).fetchone()
+        return int(self.weight * sql_result[0] * 100) / 100
