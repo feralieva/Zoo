@@ -23,9 +23,9 @@ class ZooFileAdapterTest(unittest.TestCase):
         zoo_adapter = ZooFileAdapter(self.db_conn, zoo)
         zoo_adapter.save()
 
-        self.assertEqual(1, zoo_adapter())
+        self.assertEqual(1, zoo_adapter.zoo.get_id())
 
-        expected['pe6o : tiger, 10, 120.0']
+        expected = ['pe6o : tiger, 10, 120.0']
         self.assertEqual(expected, zoo.see_animals())
 
     def tearDown(self):
