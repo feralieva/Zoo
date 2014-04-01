@@ -25,6 +25,8 @@ class TestAnimal(unittest.TestCase):
         self.animal = Animal(self.db_conn, "raccoon", 35, "Cohnen", "male", 60)
         self.assertEqual(True, self.animal.die())
 
+    def tearDown(self):
+    	call("rm animals.db",shell=True)
 
 if __name__ == '__main__':
     unittest.main()
