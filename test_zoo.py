@@ -9,11 +9,10 @@ class ZooTest(unittest.TestCase):
         call('py create_animals_database.py', shell=True)
         self.db_conn = sqlite3.connect('animals.db')
         self.zoo = Zoo(self.db_conn, 2, 1000)
-        self.zoo.animals = [Animal(self.db_conn, 'lion', 9, 'luv4o', 'male',
-            100)]
+        self.zoo.animals = [Animal(self.db_conn, 'lion', 9, 'luv4o', 'male')]
 
     def test_see_animals(self):
-        expected = ['luv4o : lion, 9, 100']
+        expected = ['luv4o : lion, 9, 67.5']
         self.assertEqual(expected, self.zoo.see_animals())
 
     def test_see_no_animals(self):
@@ -21,18 +20,18 @@ class ZooTest(unittest.TestCase):
         self.assertEqual([], self.zoo.see_animals())
 
     def test_accomodate_animal(self):
-        self.zoo.accomodate_animal('bear', 'pe6o', 10, 100, 'male')
-        expected = ['luv4o : lion, 9, 100',
-                'pe6o : bear, 10, 100']
+        self.zoo.accomodate_animal('tiger', 'pe6o', 10, 'male')
+        expected = ['luv4o : lion, 9, 67.5',
+                'pe6o : tiger, 10, 120.0']
         self.assertEqual(expected, self.zoo.see_animals())
 
     def test_accomodate_over_capacity(self):
-        self.zoo.accomodate_animal('bear', 'pe6o', 10, 100, 'male')
-        res = self.zoo.accomodate_animal('bear', 'pe6ovica', 10, 100, 'female')
+        self.zoo.accomodate_animal('tiger', 'pe6o', 10, 'male')
+        res = self.zoo.accomodate_animal('tiger', 'pe6ovica', 10, 'female')
         self.assertFalse(res)
 
-        expected = ['luv4o : lion, 9, 100',
-                'pe6o : bear, 10, 100']
+        expected = ['luv4o : lion, 9, 67.5',
+                'pe6o : tiger, 10, 120.0']
         self.assertEqual(expected, self.zoo.see_animals())
 
     def test_move_to_habitat(self):
@@ -40,6 +39,15 @@ class ZooTest(unittest.TestCase):
         expected = []
         self.assertTrue(result)
         self.assertEqual(expected, self.zoo.see_animals())
+
+    def test_move_to_haibtat_with_non_existing_animal(self):
+        result = self.zoo.move_to_habitat('asd', 'asd')
+        self.assertFalse(result)
+
+    def test_mate_animals(self):
+        self.zoo.accomodate_animal('lion', 'pe6a', 10, 'female')
+        self.zoo._mate_animals(9)
+        self.assertEqual(3, len(self.zoo.animals))
 
     def test_simulate(self):
         pass
