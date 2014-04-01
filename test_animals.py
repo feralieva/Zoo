@@ -41,6 +41,14 @@ class TestAnimal(unittest.TestCase):
         self.animal = Animal(self.db_conn, 'lion', 12, 'Pol', 'female')
         self.assertEqual(3.15, self.animal.food_for_day())
 
+    def test_type_food(self):
+        self.animal = Animal(self.db_conn, 'lion', 12, 'Pol', 'female')
+        self.assertEqual('carnivore', self.animal.type_food())
+
+    def test_expenses_for_food(self):
+        self.animal = Animal(self.db_conn, 'lion', 1, 'Pol', 'female')
+        self.assertEqual(1.04, self.animal.expenses_for_food())
+
     def tearDown(self):
         self.db_conn.close()
         call('rm -f animals.db', shell=True)
