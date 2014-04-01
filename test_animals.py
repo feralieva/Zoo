@@ -37,7 +37,6 @@ class TestAnimal(unittest.TestCase):
         self.db_conn.close()
         call('rm -f animals.db', shell=True)
 
->>>>>>> 72908b58867c8a7dff9fd68c1bfee2fb6b7526a7
 
 if __name__ == '__main__':
     unittest.main()
