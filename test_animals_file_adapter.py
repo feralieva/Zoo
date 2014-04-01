@@ -27,7 +27,7 @@ class AnimalFileAdapterTest(unittest.TestCase):
         self.animal.age = 13
         self.animals_adapter.save()
 
-        sql = 'select age from animals where id=?'
+        sql = 'select age from zoo_animals where id=?'
         cursor = self.zoo_db.cursor()
         actual = cursor.execute(sql, (self.animal.get_id(), )).fetchone()[0]
 
