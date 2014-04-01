@@ -10,20 +10,32 @@ class TestAnimal(unittest.TestCase):
         self.db_conn = sqlite3.connect("animals.db")
 
     def test_grow_young_animal(self):
-        self.animal = Animal(self.db_conn, "tiger", 12, "Pol", "male", 30)
+        self.animal = Animal(self.db_conn, "tiger", 12, "Pol", "male")
         self.animal.grow()
         self.assertEqual(13, self.animal.age)
-        self.assertEqual(42, self.animal.weight)
+        self.assertEqual(156, self.animal.weight)
 
     def test_grow_old_animal(self):
-        self.animal = Animal(self.db_conn, "lion", 180, "John", "male", 201)
+        self.animal = Animal(self.db_conn, "lion", 180, "John", "male")
         self.animal.grow()
-        self.assertEqual(201, self.animal.weight)
+        self.assertEqual(200, self.animal.weight)
         self.assertEqual(181, self.animal.age)
 
     def test_die(self):
-        self.animal = Animal(self.db_conn, "raccoon", 35, "Cohnen", "male", 60)
+        self.animal = Animal(self.db_conn, "raccoon", 35, "Cohnen", "male")
         self.assertEqual(True, self.animal.die())
+
+    def test_get_gestation_period(self):
+        self.animal = Animal(self.db_conn, 'lion', 12, 'Pol', 'female')
+        self.assertEqual(3, self.animal.get_gestation_period())
+
+    def test_get_id(self):
+        self.animal = Animal(self.db_conn, 'lion', 12, 'Pol', 'female')
+        self.assertEqual(-1, self.animal.get_id())
+
+    def tearDown(self):
+        self.db_conn.close()
+        call('rm -f animals.db', shell=True)
 
 
 if __name__ == '__main__':
