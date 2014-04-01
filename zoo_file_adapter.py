@@ -1,5 +1,6 @@
 from zoo import Zoo
 from animals import Animal
+from animals_file_adapter import AnimalFileAdapter
 
 
 class ZooFileAdapter():
@@ -20,14 +21,17 @@ class ZooFileAdapter():
     def save(self):
         if self.zoo.get_id() == -1:
             add_zoo = 'insert into zoos(capacity, budget) VALUES(?, ?)'
-            cursor = self.db_conn.execute(add_zoo,
-                    (self.zoo.capacity, self.zoo.budget))
+            cursor = self.db_conn.cursor()
+            cursor.execute(add_zoo, (self.zoo.capacity, self.zoo.budget))
             self.zoo.set_id(cursor.lastrowid)
-
-            for animal in self.zoo.animals:
-                pass
         else:
-            pass
+            update_zoo = 'update zoos set budget=?, capacity=?'
+            cursor = self.db_conn.cursor()
+            cursor.execute(update_zoo, (self.zoo.budget, self.zoo.capacity))
+
+        for animal in self.zoo.animals:
+            animal_adapter = AnimalFileAdapter(self.db_conn, animal)
+            animal_adapter.save()
 
     def load(self, load_id=-1):
         pass
