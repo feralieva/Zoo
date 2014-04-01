@@ -15,7 +15,7 @@ class AnimalFileAdapter():
 
     def _ensure_table_exists(self):
         create_table = '''CREATE TABLE IF NOT EXISTS
-            animals(id INTEGER PRIMARY KEY,
+            zoo_animals(id INTEGER PRIMARY KEY,
                     name text,
                     species text,
                     age int,
@@ -28,12 +28,12 @@ class AnimalFileAdapter():
         cursor = self.db_conn.cursor()
 
         if self.animal.get_id() == -1:
-            add_animal = '''INSERT INTO animals(name,species,age,gender,weight)
+            add_animal = '''INSERT INTO zoo_animals(name,species,age,gender,weight)
                 VALUES(?, ?, ?, ?, ?)'''
             cursor.execute(add_animal, self.prepare_to_save())
             self.animal.set_id(cursor.lastrowid)
         else:
-            update_animal = '''update animals set name=?, species=?, age=?,
+            update_animal = '''update zoo_animals set name=?, species=?, age=?,
                 gender=?, weight=? where id=?'''
             cursor.execute(update_animal, self.prepare_to_save() +
                     (self.animal.get_id(), ))
@@ -47,7 +47,7 @@ class AnimalFileAdapter():
         else:
             return False
 
-        get_animal = 'select * from animals where id=?'
+        get_animal = 'select * from zoo_animals where id=?'
         cursor = self.db_conn.cursor()
         result = cursor.execute(get_animal, (request_id, )).fetchone()
 
