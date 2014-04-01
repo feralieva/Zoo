@@ -13,15 +13,15 @@ class Animal():
         self.db_conn = db_conn
 
         cursor = self.db_conn.cursor()
-        sql_a_to_w = '''SELECT weight_age_ratio, average_weight FROM animals
-                        WHERE species = ?'''
+        sql_a_to_w = '''SELECT weight_age_ratio, average_weight, newborn_weight
+                        FROM animals WHERE species = ?'''
         sql_result = cursor.execute(sql_a_to_w, (self.species, )).fetchone()
         age_to_weight = sql_result[0]
         self.weight = self.age * age_to_weight
         if self.weight > sql_result[1]:
             self.weight = sql_result[1]
         elif self.weight == 0:
-            self.weight = age_to_weight
+            self.weight = sql_result[2]
 
     def get_id(self):
         return self.__id
@@ -78,3 +78,15 @@ class Animal():
         cursor = self.db_conn.cursor()
         sql_result = cursor.execute(sql, (self.species,)).fetchone()
         return int(self.weight * sql_result[0] * 100) / 100
+
+    def type_food(self):
+        sql = 'SELECT food_type FROM animals WHERE species = ?'
+        cursor = self.db_conn.cursor()
+        result = cursor.execute(sql, (self.species,)).fetchone()
+        return result[0]
+
+    def expenses_for_food(self):
+        if self.type_food() == 'carnivore':
+            return 4 * self.food_for_day()
+        else:
+            return 2 * self.food_for_day()
