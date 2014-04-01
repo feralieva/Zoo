@@ -1,3 +1,4 @@
+import sqlite3
 from animals import Animal
 from random import randint
 
@@ -5,10 +6,17 @@ from random import randint
 class Zoo():
     """docstring for Zoo"""
     def __init__(self, db_conn, capacity, budget):
+        self.__id = -1
         self.db_conn = db_conn
         self.capacity = capacity
         self.budget = budget
         self.animals = []
+
+    def get_id(self):
+        return self.__id
+
+    def set_id(self, new_id):
+        self.id = new_id
 
     def accomodate_animal(self, species, name, age, gender):
         if len([a for a in self.animals if a.name == name and
@@ -48,3 +56,15 @@ class Zoo():
 
     def simulate(self, interval, period):
         pass
+
+    def income(self):
+        return len(self.animals) * 60
+
+    def get_budget(self):
+        return self.budget
+
+    def expenses(self):
+        all_exp = 0
+        for animal in self.animals:
+            all_exp += animal.expenses_for_food()
+        return all_exp
