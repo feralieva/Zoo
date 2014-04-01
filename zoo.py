@@ -16,7 +16,7 @@ class Zoo():
         return self.__id
 
     def set_id(self, new_id):
-        self.id = new_id
+        self.__id = new_id
 
     def accomodate_animal(self, species, name, age, gender):
         if len([a for a in self.animals if a.name == name and
