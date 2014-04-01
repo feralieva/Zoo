@@ -53,7 +53,7 @@ class Animal():
         chance = self.age / sql_result[0]
         rand_die = randint(1,100)
 
-        if rand_die <= chance:
+        if rand_die <= chance * 100:
             return True
         else:
             return False
