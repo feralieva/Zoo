@@ -50,6 +50,7 @@ class TestAnimal(unittest.TestCase):
         self.assertEqual(1.04, self.animal.expenses_for_food())
 
     def tearDown(self):
+        self.db_conn.commit()
         self.db_conn.close()
         call('rm -f animals.db', shell=True)
 

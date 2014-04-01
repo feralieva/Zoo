@@ -53,6 +53,7 @@ class ZooTest(unittest.TestCase):
         pass
 
     def tearDown(self):
+        self.db_conn.commit()
         self.db_conn.close()
         call('rm -f animals.db', shell=True)
 

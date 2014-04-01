@@ -8,11 +8,10 @@ class AnimalFileAdapterTest(unittest.TestCase):
     """docstring for AnimalFileAdapterTest"""
     def setUp(self):
         call("py create_animals_database.py",shell=True)
-        self.animals_db = sqlite3.connect("animals.db")
-        self.animal = Animal(self.animals_db, "tiger", 12, "Pol", "male")
+        self.db_conn = sqlite3.connect("animals.db")
+        self.animal = Animal(self.db_conn, "tiger", 12, "Pol", "male")
 
-        self.zoo_db = sqlite3.connect('zoo.db')
-        self.animals_adapter = AnimalFileAdapter(self.zoo_db, self.animal)
+        self.animals_adapter = AnimalFileAdapter(self.db_conn, self.animal)
 
     def test_prepare_to_save(self):
         expected = ('Pol', 'tiger', 12, 'male', 144.0)
@@ -28,23 +27,23 @@ class AnimalFileAdapterTest(unittest.TestCase):
         self.animals_adapter.save()
 
         sql = 'select age from zoo_animals where id=?'
-        cursor = self.zoo_db.cursor()
+        cursor = self.db_conn.cursor()
         actual = cursor.execute(sql, (self.animal.get_id(), )).fetchone()[0]
 
         self.assertEqual(13, actual)
 
     def test_load(self):
         self.animals_adapter.save()
-        file_adapter = AnimalFileAdapter(self.zoo_db, Animal(self.animals_db,
+        file_adapter = AnimalFileAdapter(self.db_conn, Animal(self.db_conn,
             'lion', 1, '', ''))
         self.assertTrue(file_adapter.load(1))
         expected = ('Pol', 'tiger', 12, 'male', 144.0)
         self.assertEqual(expected, file_adapter.prepare_to_save())
 
     def tearDown(self):
-        self.animals_db.close()
-        self.zoo_db.close()
-        call('rm -f animals.db zoo.db', shell=True)
+        self.db_conn.commit()
+        self.db_conn.close()
+        call('rm -f animals.db', shell=True)
 
 if __name__ == '__main__':
     unittest.main()
