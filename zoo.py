@@ -62,3 +62,9 @@ class Zoo():
 
     def get_budget(self):
         return self.budget
+
+    def expenses(self):
+        all_exp = 0
+        for animal in self.animals:
+            all_exp += animal.expenses_for_food()
+        return all_exp
