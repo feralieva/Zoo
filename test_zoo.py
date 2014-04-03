@@ -1,4 +1,5 @@
-import unittest, sqlite3
+import unittest
+import sqlite3
 from zoo import Zoo
 from animals import Animal
 from subprocess import call
@@ -22,7 +23,7 @@ class ZooTest(unittest.TestCase):
     def test_accomodate_animal(self):
         self.zoo.accomodate_animal('tiger', 'pe6o', 10, 'male')
         expected = ['luv4o : lion, 9, 67.5',
-                'pe6o : tiger, 10, 120.0']
+                    'pe6o : tiger, 10, 120.0']
         self.assertEqual(expected, self.zoo.see_animals())
 
     def test_accomodate_over_capacity(self):
@@ -31,7 +32,7 @@ class ZooTest(unittest.TestCase):
         self.assertFalse(res)
 
         expected = ['luv4o : lion, 9, 67.5',
-                'pe6o : tiger, 10, 120.0']
+                    'pe6o : tiger, 10, 120.0']
         self.assertEqual(expected, self.zoo.see_animals())
 
     def test_move_to_habitat(self):
@@ -50,7 +51,13 @@ class ZooTest(unittest.TestCase):
         self.assertEqual(3, len(self.zoo.animals))
 
     def test_simulate(self):
-        pass
+        self.zoo.animals = [Animal(self.db_conn, 'lion', 1, 'luv4o', 'male')]
+        expected = ['month 1:',
+                    'luv4o : lion, 2, 15.0',
+                    'No animals have died during the past month.',
+                    'No animals were born during the past month.',
+                    'The current budget is 1057.92']
+        self.assertEqual(expected, self.zoo.simulate('months', 1))
 
     def tearDown(self):
         self.db_conn.commit()
